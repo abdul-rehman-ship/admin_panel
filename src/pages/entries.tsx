@@ -302,16 +302,16 @@ const lineHeight =5;
 doc.setFontSize(8);
 // add the header info to the PDF
 const difference = doc.internal.pageSize.getWidth() - x;
-let useinfo = doc.splitTextToSize(userInfo, difference);
+const useinfo = doc.splitTextToSize(userInfo, difference);
 doc.text(useinfo, x, y);
 const useinfoHeight = useinfo.length * lineHeight;
-let addressinfo = doc.splitTextToSize(addressInfo, difference);
+const addressinfo = doc.splitTextToSize(addressInfo, difference);
 doc.text(addressinfo, x, y + useinfoHeight);
 const addressinfoHeight = addressinfo.length * lineHeight;
-let otherinfo = doc.splitTextToSize(otherInfo, difference);
+const otherinfo = doc.splitTextToSize(otherInfo, difference);
 doc.text(otherinfo, x, y + useinfoHeight + addressinfoHeight);
 const otherinfoHeight = otherinfo.length * lineHeight;
-let productinfo = doc.splitTextToSize(productsInfo, difference);
+const productinfo = doc.splitTextToSize(productsInfo, difference);
 doc.text(productinfo, x, y + useinfoHeight + addressinfoHeight + otherinfoHeight);
  
   
