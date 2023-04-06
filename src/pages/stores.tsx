@@ -214,54 +214,53 @@ const readCsv=async()=>{
   }
 
 }
-const readCsvFile=async(file:any)=>{
+const readCsvFile = (file: any) => {
   const reader = new FileReader();
   reader.readAsText(file);
-  reader.onload = async(event) => {
+  reader.onload = async (event) => {
     const csvData = event.target.result;
     const dataString = csvData?.toString();
     const dataArr = dataString?.split(/\r?\n|\r/);
     const headers = dataArr?.shift()?.split(',');
     const arr = [];
-    dataArr?.forEach((d:any) => {
+    dataArr?.forEach((d: any) => {
       const row = d.split(',');
       const obj = {};
       headers?.forEach((h, i) => {
-        obj[h] = row[i]?row[i]:"";
+        obj[h] = row[i].trim();
       });
       arr.push(obj);
     });
     try {
-      
-      
-      const promises = arr.map(async (item: any) => {
+      for (const item of arr) {
         const uniqueId = new Date().getTime().toString();
         const newRef = ref(database, `Stores/${uniqueId}`);
-        if(item?.westCode===undefined || item?.chain===undefined || item?.city===undefined || item?.street===undefined || item?.customerId===undefined){
-          return
-        }else{
-          return update(newRef, {
+        if (
+          item?.westCode === undefined ||
+          item?.chain === undefined ||
+          item?.city === undefined ||
+          item?.street === undefined ||
+          item?.customerId === undefined
+        ) {
+          toast.error('Please check your csv file');
+        } else {
+          await update(newRef, {
             id: uniqueId,
             ...item,
           });
         }
-        
-      });
-    
-      await Promise.all(promises);
-      toast.success("Stores Added Successfully");
-      getStores()
-      handleClose()
+      }
+      toast.success('Stores Added Successfully');
+      getStores();
+      handleClose();
     } catch (error) {
       console.log(error);
-      getStores()
-      handleClose()
+      getStores();
+      handleClose();
     }
-    
-    
-   
   };
-}
+};
+
   return (
     <div className={`${darkMode ? 'dark' : ''}  bg-white overflow-hidden lg:overflow-visible`}>
       <Toaster/>

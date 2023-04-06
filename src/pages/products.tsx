@@ -302,10 +302,10 @@ const handleFileSelect = (event:any) => {
     }
   
   }
-  const readCsvFile=async(file:any)=>{
+  const readCsvFile = (file: any) => {
     const reader = new FileReader();
     reader.readAsText(file);
-    reader.onload = async(event) => {
+    reader.onload = async (event) => {
       const csvData = event.target.result;
       const dataString = csvData?.toString();
       const dataArr = dataString?.split(/\r?\n|\r/);
@@ -315,35 +315,30 @@ const handleFileSelect = (event:any) => {
         const row = d.split(',');
         const obj = {};
         headers?.forEach((h, i) => {
-          obj[h] = row[i];
+          obj[h] = row[i].trim();
         });
         arr.push(obj);
       });
       try {
-        const promises = arr.map(async (item: any) => {
+        for (const item of arr) {
           const uniqueId = new Date().getTime().toString();
           const newRef = ref(database, `Products/${uniqueId}`);
-      
-          return update(newRef, {
+          await update(newRef, {
             id: uniqueId,
             ...item,
           });
-        });
-      
-        await Promise.all(promises);
-        toast.success("Products Added Successfully");
-        getProducts()
-        handleClose()
+        }
+        toast.success('Products Added Successfully');
+        getProducts();
+        handleClose();
       } catch (error) {
         console.log(error);
-        getProducts()
-        handleClose()
+        getProducts();
+        handleClose();
       }
-      
-      
-     
     };
-  }
+  };
+  
   return (
     <div className={`${darkMode ? 'dark' : ''}  bg-white overflow-hidden lg:overflow-visible`}>
       <Toaster/>
