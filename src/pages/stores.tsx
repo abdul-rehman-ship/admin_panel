@@ -232,19 +232,21 @@ const readCsvFile=async(file:any)=>{
       arr.push(obj);
     });
     try {
-      const promises = arr.map(async (item: any) => {
-        const uniqueId = new Date().getTime().toString();
-        const newRef = ref(database, `Stores/${uniqueId}`);
+      console.log(arr);
+      
+      // const promises = arr.map(async (item: any) => {
+      //   const uniqueId = new Date().getTime().toString();
+      //   const newRef = ref(database, `Stores/${uniqueId}`);
     
-        return update(newRef, {
-          id: uniqueId,
-          ...item,
-        });
-      });
+      //   return update(newRef, {
+      //     id: uniqueId,
+      //     ...item,
+      //   });
+      // });
     
-      await Promise.all(promises);
-      toast.success("Stores Added Successfully");
-      getStores()
+      // await Promise.all(promises);
+      // toast.success("Stores Added Successfully");
+      // getStores()
       handleClose()
     } catch (error) {
       console.log(error);
