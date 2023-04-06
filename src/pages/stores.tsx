@@ -237,11 +237,15 @@ const readCsvFile=async(file:any)=>{
       const promises = arr.map(async (item: any) => {
         const uniqueId = new Date().getTime().toString();
         const newRef = ref(database, `Stores/${uniqueId}`);
-    
-        return update(newRef, {
-          id: uniqueId,
-          ...item,
-        });
+        if(item?.westCode===undefined || item?.chain===undefined || item?.city===undefined || item?.street===undefined || item?.customerId===undefined){
+          return
+        }else{
+          return update(newRef, {
+            id: uniqueId,
+            ...item,
+          });
+        }
+        
       });
     
       await Promise.all(promises);
