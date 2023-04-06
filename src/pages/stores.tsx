@@ -223,30 +223,30 @@ const readCsvFile=async(file:any)=>{
     const dataArr = dataString?.split(/\r?\n|\r/);
     const headers = dataArr?.shift()?.split(',');
     const arr = [];
-    dataArr?.forEach((d) => {
+    dataArr?.forEach((d:any) => {
       const row = d.split(',');
       const obj = {};
       headers?.forEach((h, i) => {
-        obj[h] = row[i];
+        obj[h] = row[i]?row[i]:"";
       });
       arr.push(obj);
     });
     try {
-      console.log(arr);
       
-      // const promises = arr.map(async (item: any) => {
-      //   const uniqueId = new Date().getTime().toString();
-      //   const newRef = ref(database, `Stores/${uniqueId}`);
+      
+      const promises = arr.map(async (item: any) => {
+        const uniqueId = new Date().getTime().toString();
+        const newRef = ref(database, `Stores/${uniqueId}`);
     
-      //   return update(newRef, {
-      //     id: uniqueId,
-      //     ...item,
-      //   });
-      // });
+        return update(newRef, {
+          id: uniqueId,
+          ...item,
+        });
+      });
     
-      // await Promise.all(promises);
-      // toast.success("Stores Added Successfully");
-      // getStores()
+      await Promise.all(promises);
+      toast.success("Stores Added Successfully");
+      getStores()
       handleClose()
     } catch (error) {
       console.log(error);
