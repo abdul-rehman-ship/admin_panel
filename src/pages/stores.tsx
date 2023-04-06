@@ -232,6 +232,7 @@ const readCsvFile = (file: any) => {
       arr.push(obj);
     });
     try {
+      toast.loading('Adding Stores...');
       for (const item of arr) {
         const uniqueId = new Date().getTime().toString();
         const newRef = ref(database, `Stores/${uniqueId}`);
@@ -242,6 +243,8 @@ const readCsvFile = (file: any) => {
           item?.street === undefined ||
           item?.customerId === undefined
         ) {
+      toast.dismiss();
+
           toast.error('Please check your csv file');
         } else {
           await update(newRef, {
@@ -250,10 +253,13 @@ const readCsvFile = (file: any) => {
           });
         }
       }
+      toast.dismiss();
       toast.success('Stores Added Successfully');
       getStores();
       handleClose();
     } catch (error) {
+      toast.dismiss();
+
       console.log(error);
       getStores();
       handleClose();

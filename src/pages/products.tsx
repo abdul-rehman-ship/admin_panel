@@ -320,18 +320,23 @@ const handleFileSelect = (event:any) => {
         arr.push(obj);
       });
       try {
+        toast.loading('Adding Products...');
         for (const item of arr) {
           const uniqueId = new Date().getTime().toString();
           const newRef = ref(database, `Products/${uniqueId}`);
+
           await update(newRef, {
             id: uniqueId,
             ...item,
           });
         }
+        toast.dismiss()
         toast.success('Products Added Successfully');
         getProducts();
         handleClose();
       } catch (error) {
+      toast.dismiss();
+
         console.log(error);
         getProducts();
         handleClose();
